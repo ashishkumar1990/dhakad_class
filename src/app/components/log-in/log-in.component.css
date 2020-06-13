@@ -1,0 +1,33 @@
+
+body {
+  margin:0;
+}
+
+.admindiv {
+  background: linear-gradient(45deg, #162850 25%, #AAD0D9 25%);
+  color: #162850;
+  width: 500px;
+  height: 50px;
+  text-align: center;
+}
+
+.loginButton {
+  background: linear-gradient(45deg,#AAD0D9 25%, #162850 75%,#AAD0D9 25%);
+  color: white;
+  width: 309px;
+  height: 50px;
+  font-size: 21px;
+  border: none;
+  margin-left: 92px;
+  margin-top: 70px
+}
+.card{
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+  padding: 20px;
+  height: 400px;
+  margin-top: 150px;
+}
+
+
+
+
