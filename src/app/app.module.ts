@@ -18,15 +18,14 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 
 /* Components */
 import { LogInComponent } from './components/log-in/log-in.component';
-import { RegisterComponent } from './components/register/register.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LogInComponent,
-    RegisterComponent,
-    RegisterComponent,
+    DashboardComponent,
     LogInComponent
   ],
   imports: [
