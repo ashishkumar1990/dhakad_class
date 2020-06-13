@@ -1,36 +1,30 @@
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
-  <mat-card class="box">
-    <mat-card-header>
-      <mat-card-title>Register</mat-card-title>
-    </mat-card-header>
 
-    <form class="example-form">
+<div class="login-wrapper"  >
+  <mat-toolbar  class="app-header" style="background: #162850;">
+  </mat-toolbar>
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav mode="side" opened >
+      <div style="margin-top: 50px; padding: 20px;" ><img src="../../../assets/img_avatar.png"  alt="Avatar" style="width:200px ;  border-radius: 50%;">
+      </div>
+      <div style="text-align: center">Wel come Mr.dhakad</div>
 
-      <mat-card-content>
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Username">
-        </mat-form-field>
+      <div style="width: 240px ; height:50px ;background: #AAD0D9;border-left: 5px solid #162850 ;margin-top: 5px"><div style="display: inline-flex"><img src="../../../assets/Users.png" style="margin-right: 40px;
+    margin-left: 10px;
+    margin-top: 15px;"><div style="margin-top: 18px">Students</div></div></div>
+      <div style="width: 240px ; height:50px ;background: #AAD0D9;border-left: 5px solid #162850 ;margin-top: 5px"><div style="display: inline-flex"><img src="../../../assets/Faculty.png" style="margin-right: 40px;
+    margin-left: 10px;
+    margin-top: 15px;"><div style="margin-top: 18px">Faculty</div></div></div>
+      <div style="width: 240px ; height:50px ;background: #AAD0D9;border-left: 5px solid #162850 ;margin-top: 5px"><div style="display: inline-flex"><img src="../../../assets/Operator.png" style="margin-right: 40px;
+    margin-left: 10px;
+    margin-top: 15px;"><div style="margin-top: 18px">Operator</div></div></div>
+      <div style="width: 240px ; height:50px ;background: #AAD0D9;border-left: 5px solid #162850 ;margin-top: 5px"><div style="display: inline-flex"><img src="../../../assets/Pacakge.png" style="margin-right: 40px;
+    margin-left: 10px;
+    margin-top: 15px;"><div style="margin-top: 18px">Packages</div></div></div>
+      <div style="width: 240px ; height:50px ;background: #AAD0D9;border-left: 5px solid #162850 ;margin-top: 5px"><div style="display: inline-flex"><img src="../../../assets/Finance.png" style="margin-right: 40px;
+    margin-left: 10px;
+    margin-top: 15px;"><div style="margin-top: 18px">Finance</div></div></div>
+    </mat-sidenav>
+    <mat-sidenav-content>Main content</mat-sidenav-content>
+  </mat-sidenav-container>
 
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Email">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Password">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-          <mat-label>Choose a role...</mat-label>
-          <mat-select [(value)]="selected">
-            <mat-option [value]="roles" *ngFor="let roles of Roles">{{roles}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-      </mat-card-content>
-
-      <button mat-stroked-button color="accent" class="btn-block">Register</button>
-
-    </form>
-  </mat-card>
 </div>
