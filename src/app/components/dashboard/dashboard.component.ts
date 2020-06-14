@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,9 +11,16 @@ export class DashboardComponent implements OnInit {
 
   // Roles: any = ['Admin', 'Author', 'Reader'];
 
-  constructor() { }
+  constructor(private _router:Router) { }
 
   ngOnInit() {
   }
 
+  onClickCategory(){
+    this._router.navigate(['/category']);
+  }
+
+  onClickSubCategory(){
+    this._router.navigate(['/subcategory']);
+  }
 }

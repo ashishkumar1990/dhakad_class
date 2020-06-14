@@ -1,0 +1,29 @@
+
+<div class="login-wrapper" fxLayoutAlign="center center">
+  <div class="card" fxLayoutAlign="center center">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><div class="admindiv"><span>Create Category</span></div></mat-card-title>
+      </mat-card-header>
+
+      <form [formGroup]="uploadForm" (ngSubmit)="submit()">
+        <mat-card-content>
+          <mat-form-field class="example-full-width">
+            <input type="file" accept="image/*" (change)="showPreview($event)" />
+          </mat-form-field>
+
+          <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
+            <img [src]="imageURL" [alt]="uploadForm.value.name">
+          </div>
+
+          <mat-form-field class="example-full-width">
+            <input formControlName="name" placeholder="Enter category name">
+          </mat-form-field>
+        </mat-card-content>
+        <button mat-flat-button color="primary">Save</button>
+        <button mat-flat-button color="primary"  style="margin-left: 10px">Cancel</button>
+      </form>
+    </mat-card>
+  </div>
+
+</div>

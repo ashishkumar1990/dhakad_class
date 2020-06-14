@@ -1,0 +1,23 @@
+
+body {
+  margin:0;
+}
+
+.admindiv {
+  background: linear-gradient(45deg, #162850 25%, #AAD0D9 25%);
+  color: #162850;
+  width: 500px;
+  height: 50px;
+  text-align: center;
+}
+
+.card{
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+  padding: 30px;
+  height: 420px;
+  margin-top: 100px;
+}
+
+
+
+

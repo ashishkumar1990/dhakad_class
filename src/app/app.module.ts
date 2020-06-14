@@ -14,11 +14,13 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /* Angular Flex Layout */
-import { FlexLayoutModule } from "@angular/flex-layout";
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 /* Components */
 import { LogInComponent } from './components/log-in/log-in.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
+import {CategoryComponent} from './components/category/category.component';
+import {SubCategoryComponent} from './components/subcategory/subcategory.component';
 
 
 @NgModule({
@@ -26,7 +28,8 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
     AppComponent,
     LogInComponent,
     DashboardComponent,
-    LogInComponent
+    CategoryComponent,
+    SubCategoryComponent
   ],
   imports: [
     BrowserModule,
