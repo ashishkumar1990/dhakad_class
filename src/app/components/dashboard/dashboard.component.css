@@ -5,3 +5,8 @@
   left: 0;
   right: 0;
 }
+.slanted-right.slant-to-right:after {
+  right: 0px;
+  border-right: 100px solid #ececec;
+  border-bottom: 200px solid  #333333;
+}
