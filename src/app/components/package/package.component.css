@@ -1,20 +1,24 @@
 
+
+.admindiv {
+  background: linear-gradient(45deg, #162850 25%, #AAD0D9 25%);
+  color: #162850;
+  width: 500px;
+  height: 50px;
+  text-align: center;
+}
+
 body {
   margin:0;
 }
 
-.categorydiv {
+.packagediv {
   background: linear-gradient(45deg, #162850 25%, #AAD0D9 25%);
   color: #162850;
   text-align: center;
   height: 50px;
 }
-.categorydiv {
-  background: linear-gradient(45deg, #162850 25%, #AAD0D9 25%);
-  color: #162850;
-  text-align: center;
-  height: 50px;
-}
+
 .card{
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
   height: 92%;
@@ -105,5 +109,7 @@ table{
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+
 
 

@@ -23,4 +23,8 @@ export class DashboardComponent implements OnInit {
   onClickSubCategory(){
     this._router.navigate(['/subcategory']);
   }
+
+  onClickPackage(){
+    this._router.navigate(['/package']);
+  }
 }

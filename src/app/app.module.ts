@@ -27,6 +27,7 @@ import { LogInComponent } from './components/log-in/log-in.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {CategoryComponent} from './components/category/category.component';
 import {SubCategoryComponent} from './components/subcategory/subcategory.component';
+import {PackageComponent} from './components/package/package.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import {SubCategoryComponent} from './components/subcategory/subcategory.compone
     LogInComponent,
     DashboardComponent,
     CategoryComponent,
-    SubCategoryComponent
+    SubCategoryComponent,
+    PackageComponent
   ],
   imports: [
     BrowserModule,
