@@ -10,20 +10,18 @@
 
       <form class="example-form" [formGroup]="uploadForm" (ngSubmit)="submit()" style="text-align: center">
         <mat-card-content>
-          <img [src]="imageURL" *ngIf="imageURL && imageURL !== ''" style="margin-top: 20px; height: 100px;width: 100px;border: 5px solid #AAD0D9; position: absolute" [alt]="uploadForm.value.name">
+          <img [src]="imageURL" *ngIf="imageURL && imageURL !== ''" style="margin-top: 20px; height: 140px;width: 140px;border: 5px solid #AAD0D9; position: absolute" [alt]="uploadForm.value.name">
           <input  type="file" accept="image/*"  class="form-control" name="categoryImage" (change)="showPreview($event)"  style="margin-left: 200px;margin-top: 58px;"/>
           <mat-form-field style="margin-left: 10px; width:25%">
             <input matInput  class="form-control" name="packageName" placeholder="Enter package name">
           </mat-form-field>
-          <mat-form-field  style="margin-left: 10px; width:25%">
+          <mat-form-field  style="margin-left: 10px; width:15%">
             <mat-label>Select Category</mat-label>
             <mat-select>
-              <mat-option value="category">Category1</mat-option>
-              <mat-option value="category">Category2</mat-option>
-              <mat-option value="category">Category3</mat-option>
+              <mat-option  *ngFor="let category of categories" value="category._id">{{category.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field  style="margin-left: 10px; width:25%">
+          <mat-form-field  style="margin-left: 10px; width:15%">
             <mat-label>Select Sub-Category</mat-label>
             <mat-select>
               <mat-option value="subcategory">SubCategory1</mat-option>
@@ -31,17 +29,17 @@
               <mat-option value="subcategory">SubCategory3</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field style="margin-left: 10px; width:25%">
+          <mat-form-field style="margin-left: 188px; width:25%">
             <mat-label>Description</mat-label>
-            <textarea matInput rows="1" cols="40" placeholder="description"></textarea>
+            <textarea matInput rows="4" cols="40" placeholder="description"></textarea>
           </mat-form-field>
-          <mat-form-field style="margin-left: 10px; width:25%">
+          <mat-form-field style="margin-left: 10px; width:12%">
             <input matInput  class="form-control" type="number" name="duration" placeholder="Duration">
           </mat-form-field>
-          <mat-form-field style="margin-left: 10px; width:25%">
+          <mat-form-field style="margin-left: 10px; width:12%">
             <input matInput  class="form-control" type="number" name="mrp amount" placeholder="Mpr Amount">
           </mat-form-field>
-          <mat-form-field style="margin-left: 10px; width:25%">
+          <mat-form-field style="margin-left: 10px; width:12%">
             <input matInput  class="form-control" type="number" name="offer amount" placeholder="Offer Amount">
           </mat-form-field>
         </mat-card-content>

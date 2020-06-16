@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {MatPaginator, MatTableDataSource} from "@angular/material";
 import * as _ from "underscore";
 import {FormBuilder, FormGroup} from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 export interface PeriodicElement {
   name: string;
@@ -21,6 +23,7 @@ let ELEMENT_DATA: PeriodicElement[] = [
   {position: 9, name: 'Fluorine', image: ""},
   {position: 10, name: 'Neon', image: ""},
 ];
+const  _serverUrl = 'http://34.93.43.250:3000/';
 
 
 @Component({
@@ -36,11 +39,12 @@ export class PackageComponent implements OnInit {
   displayedColumns: string[] = ['position', 'image', 'name', 'actions'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  categories=[];
 
 
   // Roles: any = ['Admin', 'Author', 'Reader'];
 
-  constructor(public fb: FormBuilder) {
+  constructor(public fb: FormBuilder,private _http: HttpClient,private toastr: ToastrService) {
     // Reactive Form
     this.uploadForm = this.fb.group({
       avatar: [null],
@@ -50,6 +54,7 @@ export class PackageComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
+    this.getCategories();
   }
 
   removePackage(id) {
@@ -67,6 +72,26 @@ export class PackageComponent implements OnInit {
     ELEMENT_DATA.push({position: 11, name: 'NewPackage', image: ""});
     this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
+  }
+
+  getCategories ()  {
+    let  getAllCategoryUrl="admin/categories?";
+    return this._http.get<any>(_serverUrl+getAllCategoryUrl).subscribe(
+      (res) =>{
+        this.categories=res.data;
+        // let categories= _.map(res.data,function (category,index) {
+        //   category.position=(index+1);
+        //   category.imagePath="http://34.93.43.250:3000/uploads/"+category.image;
+        //   return category;
+        // });
+        // this.dataSource =new MatTableDataSource(categories);
+        // this.dataSource.paginator = this.paginator;
+        this.toastr.success('categories loaded successfully.')
+
+      } ,
+      (err) => console.log(err)
+    );
+
   }
 
 
