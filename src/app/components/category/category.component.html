@@ -1,20 +1,45 @@
-
 <div class="login-wrapper" fxLayoutAlign="center center">
   <div class="card">
     <mat-card>
       <mat-card-header>
-        <mat-card-title><div class="categorydiv"><span>Category</span></div></mat-card-title>
+        <mat-card-title>
+          <div class="categorydiv"><span>Category</span></div>
+        </mat-card-title>
       </mat-card-header>
-      <form [formGroup]="uploadForm" (ngSubmit)="submit()" style="text-align: center">
+      <a  routerLink="/dashboard" style="color: #162850;float: right; margin-top: 10px; margin-right: 10px; cursor: pointer"> Back </a>
+      <img src="../../../assets/plus.png" style="    float: right; margin-top: 10px; margin-right: 10px;height: 20px;width: 20px;cursor: pointer" (click)="allowCategoryForm()" *ngIf="!enableCategory" >
+      <form [formGroup]="uploadForm" (ngSubmit)="submit()" style="text-align: center" *ngIf="enableCategory">
         <mat-card-content>
-            <img [src]="imageURL" *ngIf="imageURL && imageURL !== ''" style="margin-top: 20px; height: 100px;width: 100px;border: 5px solid #AAD0D9; position: absolute" [alt]="uploadForm.value.name">
-          <input  type="file" accept="image/*"  class="form-control" name="categoryImage" (change)="showPreview($event)"  style="margin-left: 200px;margin-top: 58px;"/>
+          <img [src]="imageURL" *ngIf="imageURL && imageURL !== ''"
+               style="margin-top: 20px; height: 100px;width: 100px;border: 5px solid #AAD0D9; position: absolute"
+               [alt]="uploadForm.value.name">
+          <input type="file" accept="image/*" class="form-control" name="categoryImage" (change)="showPreview($event)"
+                 style="margin-left: 200px;margin-top: 58px;"/>
           <mat-form-field style="margin-left: 10px; width:30%">
-            <input matInput  class="form-control" name="categoryName" placeholder="Enter category name">
+            <input matInput class="form-control" name="categoryName" placeholder="Enter category name"
+                   formControlName="name">
           </mat-form-field>
+
+          <input [(colorPicker)]="textColor" [style.background]="textColor"
+                 (colorPickerChange)="onChangeColor('text',$event)" style="height: 20px;width: 20px"/>
+
+          <mat-form-field style="margin-left: 10px;margin-right: 10px; width:5%">
+            <input matInput class="form-control" name="categoryName" placeholder="Text_bg" [disabled]="true"
+                   formControlName="text_bg" >
+          </mat-form-field>
+          <input [(colorPicker)]="imageColor" [style.background]="imageColor"
+                 (colorPickerChange)="onChangeColor('image',$event)"
+                 style="height: 20px;width: 20px;margin-left: 10px;"/>
+
+          <mat-form-field style="margin-left: 10px;margin-right: 10px; width:5%">
+            <input matInput class="form-control" name="categoryName" placeholder="Image_bg" disabled="true"
+                   formControlName="image_bg">
+          </mat-form-field>
+
         </mat-card-content>
-        <button mat-flat-button color="primary" style="margin-left: 10px"  (click)="addCategory('newCatagory')" >Save</button>
-        <button mat-flat-button color="primary"  style="margin-left: 10px">Cancel</button>
+        <button mat-flat-button color="primary" style="margin-left: 10px">Save
+        </button>
+        <button mat-flat-button color="primary" style="margin-left: 10px" (click)="reset()">Cancel</button>
       </form>
     </mat-card>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin-top: 50px">
@@ -24,32 +49,33 @@
 
       <!-- Position Column -->
       <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> No. </th>
-        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> No.</th>
+        <td mat-cell *matCellDef="let element"> {{element.position}}</td>
       </ng-container>
 
       <!-- Name Column -->
-      <ng-container matColumnDef="name" >
-        <th mat-header-cell *matHeaderCellDef  style="background: #162850 ; color:white"> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Name</th>
+        <td mat-cell *matCellDef="let element"> {{element.name}}</td>
       </ng-container>
 
       <!-- Weight Column -->
-      <ng-container matColumnDef="image" >
-        <th mat-header-cell *matHeaderCellDef  style="background: #162850 ; color:white"> Image </th>
-        <td mat-cell *matCellDef="let element"> <img src="../../../assets/Pacakge.png" style="margin-right: 40px;
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Image</th>
+        <td mat-cell *matCellDef="let element"><img src="{{element.imagePath}}" style="margin-right: 40px;
     margin-left: 10px;
-    margin-top: 15px;"> </td>
+    margin-top: 15px; height: 25px;width:25px"></td>
       </ng-container>
 
       <!-- Symbol Column -->
-      <ng-container matColumnDef="actions" >
-        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Actions </th>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Actions</th>
         <td mat-cell *matCellDef="let element"><img src="../../../assets/edit.png" style="margin-right: 40px;
     margin-left: 10px;
-    margin-top: 15px; height: 18px ;width: 18px" > <img src="../../../assets/remove.png" (click)="removeCategory(element.position)" style="margin-right: 40px;
+    margin-top: 15px; height: 18px ;width: 18px;cursor: pointer" (click)="getCategoryById(element._id)">
+          <img src="../../../assets/remove.png" (click)="removeCategory(element._id)" style="margin-right: 40px;
     margin-left: 10px;
-    margin-top: 15px;height: 18px ;width: 18px"> </td>
+    margin-top: 15px;height: 18px ;width: 18px;cursor: pointer"></td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

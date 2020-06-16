@@ -12,9 +12,15 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 /* FormsModule */
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 /* Angular Flex Layout */
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { ToastrModule } from 'ngx-toastr';
+
+
 
 /* Components */
 import { LogInComponent } from './components/log-in/log-in.component';
@@ -38,7 +44,10 @@ import {SubCategoryComponent} from './components/subcategory/subcategory.compone
     AngularMaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ColorPickerModule,
+    HttpClientModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],
