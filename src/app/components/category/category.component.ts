@@ -228,6 +228,7 @@ export class CategoryComponent implements OnInit {
     this.uploadForm.value.text_bg=[''];
     this.imageURL="";
     this.enableCategory=false;
+    this.id="";
   }
 
 }

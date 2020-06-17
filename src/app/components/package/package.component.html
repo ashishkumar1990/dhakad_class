@@ -7,86 +7,119 @@
       <mat-card-header>
         <mat-card-title><div class="packagediv" style="margin-top: 50px"><span>Package</span></div></mat-card-title>
       </mat-card-header>
-
-      <form class="example-form" [formGroup]="uploadForm" (ngSubmit)="submit()" style="text-align: center">
+      <a  routerLink="/admin/dashboard" style="color: #162850;float: right; margin-top: 10px; margin-right: 10px; cursor: pointer"> Back </a>
+      <img src="../../../assets/plus.png" style="    float: right; margin-top: 10px; margin-right: 10px;height: 20px;width: 20px;cursor: pointer" (click)="allowPackageForm()" *ngIf="!enablePackage" >
+      <form class="example-form" [formGroup]="uploadForm" (ngSubmit)="submit()" style="text-align: center" *ngIf="enablePackage" >
         <mat-card-content>
           <img [src]="imageURL" *ngIf="imageURL && imageURL !== ''" style="margin-top: 20px; height: 140px;width: 140px;border: 5px solid #AAD0D9; position: absolute" [alt]="uploadForm.value.name">
           <input  type="file" accept="image/*"  class="form-control" name="categoryImage" (change)="showPreview($event)"  style="margin-left: 200px;margin-top: 58px;"/>
           <mat-form-field style="margin-left: 10px; width:25%">
-            <input matInput  class="form-control" name="packageName" placeholder="Enter package name">
+            <input matInput  class="form-control" name="packageName" placeholder="Enter package name" formControlName="name">
           </mat-form-field>
           <mat-form-field  style="margin-left: 10px; width:15%">
             <mat-label>Select Category</mat-label>
-            <mat-select>
-              <mat-option  *ngFor="let category of categories" value="category._id">{{category.name}}</mat-option>
+            <mat-select  formControlName="category_id">
+              <mat-option  *ngFor="let category of categories" value="{{category._id}}">{{category.name}}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field  style="margin-left: 10px; width:15%">
             <mat-label>Select Sub-Category</mat-label>
-            <mat-select>
-              <mat-option value="subcategory">SubCategory1</mat-option>
-              <mat-option value="subcategory">SubCategory2</mat-option>
-              <mat-option value="subcategory">SubCategory3</mat-option>
+            <mat-select  formControlName="subCategory_id">
+              <mat-option  *ngFor="let subCategory of subCategories" value="{{subCategory._id}}">{{subCategory.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field style="margin-left: 188px; width:25%">
+          <div style="margin-top: 10px">
+          <mat-form-field style="margin-left: 206px;width: 75%;">
             <mat-label>Description</mat-label>
-            <textarea matInput rows="4" cols="40" placeholder="description"></textarea>
+            <textarea matInput rows="4" cols="40" placeholder="description" formControlName="description"></textarea>
+          </mat-form-field>
+          </div>
+          <div style="margin-top: 10px">
+          <mat-checkbox style="margin-left: 200px;" [checked]= "true" [disabled]= "true">Life Time Validity</mat-checkbox>
+          <mat-form-field style="margin-left: 10px; width:27%">
+            <input matInput  class="form-control" type="text" name="tagLine" placeholder="TagLine" formControlName="tagline">
           </mat-form-field>
           <mat-form-field style="margin-left: 10px; width:12%">
-            <input matInput  class="form-control" type="number" name="duration" placeholder="Duration">
+            <input matInput  class="form-control" type="number" name="duration" placeholder="Duration" formControlName="duration">
           </mat-form-field>
           <mat-form-field style="margin-left: 10px; width:12%">
-            <input matInput  class="form-control" type="number" name="mrp amount" placeholder="Mpr Amount">
+            <input matInput  class="form-control" type="number" name="mrp amount" placeholder="Mpr Amount" formControlName="mrp">
           </mat-form-field>
           <mat-form-field style="margin-left: 10px; width:12%">
-            <input matInput  class="form-control" type="number" name="offer amount" placeholder="Offer Amount">
+            <input matInput  class="form-control" type="number" name="offer amount" placeholder="Offer Amount" formControlName="offer_amount">
           </mat-form-field>
+          </div>
         </mat-card-content>
+        <div style="margin-top: 10px">
         <button mat-flat-button color="primary" style="margin-left: 10px"  (click)="addSubCategory('newCatagory')" >Save</button>
         <button mat-flat-button color="primary"  style="margin-left: 10px">Cancel</button>
+        </div>
       </form>
     </mat-card>
-   <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin-top: 50px">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin-top: 50px" *ngIf="!enablePackage" >
 
-      &lt;!&ndash;- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" &ndash;&gt;
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
 
-      &lt;!&ndash; Position Column &ndash;&gt;
+      <!-- Position Column -->
       <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> No. </th>
-        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> No.</th>
+        <td mat-cell *matCellDef="let element"> {{element.position}}</td>
       </ng-container>
 
-      &lt;!&ndash; Name Column &ndash;&gt;
-      <ng-container matColumnDef="name" >
-        <th mat-header-cell *matHeaderCellDef  style="background: #162850 ; color:white"> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Name</th>
+        <td mat-cell *matCellDef="let element"> {{element.name}}</td>
       </ng-container>
 
-      &lt;!&ndash; Weight Column &ndash;&gt;
-      <ng-container matColumnDef="image" >
-        <th mat-header-cell *matHeaderCellDef  style="background: #162850 ; color:white"> Image </th>
-        <td mat-cell *matCellDef="let element"> <img src="../../../assets/Pacakge.png" style="margin-right: 40px;
+      <!-- Weight Column -->
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Image</th>
+        <td mat-cell *matCellDef="let element"><img src="{{element.imagePath}}" style="margin-right: 40px;
     margin-left: 10px;
-    margin-top: 15px;"> </td>
+    margin-top: 15px; height: 25px;width:25px"></td>
       </ng-container>
 
-      &lt;!&ndash; Symbol Column &ndash;&gt;
-      <ng-container matColumnDef="actions" >
-        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Actions </th>
-        <td mat-cell *matCellDef="let element"><img src="../../../assets/edit.png" style="margin-right: 40px;
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Category</th>
+        <td mat-cell *matCellDef="let element"> {{element.category}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="subCategory">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Sub-Category</th>
+        <td mat-cell *matCellDef="let element"> {{element.subCategory}}</td>
+      </ng-container>
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Duration</th>
+        <td mat-cell *matCellDef="let element"> {{element.duration}}</td>
+      </ng-container>
+      <ng-container matColumnDef="validity">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Validity</th>
+        <td mat-cell *matCellDef="let element"> Life Time</td>
+      </ng-container>
+      <ng-container matColumnDef="mrp">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> MRP.</th>
+        <td mat-cell *matCellDef="let element"> {{element.mrp}}</td>
+      </ng-container>
+      <ng-container matColumnDef="offerAmount">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> offerAmount</th>
+        <td mat-cell *matCellDef="let element"> {{element.offer_amount}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Actions</th>
+        <td mat-cell *matCellDef="let element"><img src="../../../assets/edit.png" style="margin-right: 13px;
     margin-left: 10px;
-    margin-top: 15px; height: 18px ;width: 18px" > <img src="../../../assets/remove.png" (click)="removeSubCategory(element.position)" style="margin-right: 40px;
+    margin-top: 15px; height: 18px ;width: 18px;cursor: pointer" (click)="getPackageById(element._id)">
+          <img src="../../../assets/remove.png" (click)="removeCategory(element._id)" style="margin-right: 40px;
     margin-left: 10px;
-    margin-top: 15px;height: 18px ;width: 18px"> </td>
+    margin-top: 15px;height: 18px ;width: 18px;cursor: pointer"></td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-
-    <mat-paginator [pageSizeOptions]="[8]" showFirstLastButtons></mat-paginator>-->
   </div>
 
 </div>

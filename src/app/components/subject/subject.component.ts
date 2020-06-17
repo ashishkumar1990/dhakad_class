@@ -21,8 +21,6 @@ export class SubjectComponent implements OnInit {
   displayedColumns: string[] = ['position','image', 'name', 'actions'];
   dataSource = new MatTableDataSource(Subjects);
   imageURL: string;
-  imageColor:string;
-  textColor:string;
   enableSubject:boolean;
   mode:string;
   id:"";
@@ -35,9 +33,7 @@ export class SubjectComponent implements OnInit {
     // Reactive Form
     this.uploadForm = this.fb.group({
       image: [null],
-      name: [''],
-      text_bg: [''],
-      image_bg: ['']
+      name: ['']
     });
   }
 
@@ -90,16 +86,6 @@ export class SubjectComponent implements OnInit {
 
   allowSubjectForm(){
     this.enableSubject=true;
-    if(this.mode==="create"){
-      this.uploadForm.patchValue({
-        text_bg: "#ffffff"
-      });
-      this.uploadForm.get('text_bg').updateValueAndValidity();
-      this.uploadForm.patchValue({
-        image_bg: "#ffffff"
-      });
-      this.uploadForm.get('image_bg').updateValueAndValidity();
-    }
 
   }
 
@@ -118,8 +104,6 @@ export class SubjectComponent implements OnInit {
     const formData = new FormData();
     formData.append('image', data.image);
     formData.append('name',data.name);
-    formData.append('text_bg', data.text_bg);
-    formData.append('image_bg', data.text_bg);
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this._http.post<any>(_serverUrl+addSubjectUrl, formData,{headers:headers}).subscribe(
@@ -145,8 +129,6 @@ export class SubjectComponent implements OnInit {
       formData.append('image', data.image);
     }
     formData.append('name',data.name);
-    formData.append('text_bg', data.text_bg);
-    formData.append('image_bg', data.text_bg);
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this._http.put<any>(_serverUrl+addSubjectUrl, formData,{headers:headers}).subscribe(
@@ -164,20 +146,6 @@ export class SubjectComponent implements OnInit {
     );
   }
 
-  onChangeColor(type,$event) {
-    if(type==="image"){
-      this.uploadForm.patchValue({
-        image_bg: $event
-      });
-      this.uploadForm.get('image_bg').updateValueAndValidity();
-    }else{
-      this.uploadForm.patchValue({
-        text_bg: $event
-      });
-      this.uploadForm.get('text_bg').updateValueAndValidity();
-    }
-  }
-
   getSubjectById (id)  {
     let  getSubjectUrl="organiser/subjects/"+id;
     return this._http.get<any>(_serverUrl+getSubjectUrl).subscribe(
@@ -189,19 +157,8 @@ export class SubjectComponent implements OnInit {
           name: res.data.name
         });
         this.uploadForm.get('name').updateValueAndValidity();
-        this.uploadForm.patchValue({
-          text_bg: res.data.text_bg
-        });
-        this.uploadForm.get('text_bg').updateValueAndValidity();
-        this.uploadForm.patchValue({
-          image_bg: res.data.image_bg
-        });
-        this.uploadForm.get('image_bg').updateValueAndValidity();
-
 
         this.imageURL="http://34.93.43.250:3000/uploads/"+res.data.image;
-        this.imageColor=res.data.image_bg;
-        this.textColor=res.data.text_bg;
         this.toastr.success('subject loaded successfully.')
       } ,
       (err) => console.log(err)

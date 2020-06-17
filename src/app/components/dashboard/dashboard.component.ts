@@ -17,14 +17,14 @@ export class DashboardComponent implements OnInit {
   }
 
   onClickCategory(){
-    this._router.navigate(['/category']);
+    this._router.navigate(['admin/category']);
   }
 
   onClickSubCategory(){
-    this._router.navigate(['/subcategory']);
+    this._router.navigate(['admin/subcategory']);
   }
 
   onClickPackage(){
-    this._router.navigate(['/package']);
+    this._router.navigate(['admin/package']);
   }
 }

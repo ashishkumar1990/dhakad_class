@@ -7,7 +7,7 @@
       <mat-card-header>
         <mat-card-title><div class="subCategorydiv" style="margin-top: 50px"><span>Sub-Category</span></div></mat-card-title>
       </mat-card-header>
-      <a  routerLink="/dashboard" style="color: #162850;float: right; margin-top: 10px; margin-right: 10px; cursor: pointer"> Back </a>
+      <a  routerLink="/admin/dashboard" style="color: #162850;float: right; margin-top: 10px; margin-right: 10px; cursor: pointer"> Back </a>
       <img src="../../../assets/plus.png" style="float: right; margin-top: 10px; margin-right: 10px;height: 20px;width: 20px;cursor: pointer" (click)="allowCategoryForm()" *ngIf="!enableSubCategory" >
       <form class="example-form" style="text-align: center" [formGroup]="uploadForm" (ngSubmit)="submit()" *ngIf="enableSubCategory">
         <mat-card-content>

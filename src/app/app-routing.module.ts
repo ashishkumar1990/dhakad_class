@@ -12,13 +12,13 @@ import {TopicComponent} from './components/topic/topic.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LogInComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'category', component: CategoryComponent },
-  { path: 'subcategory', component: SubCategoryComponent },
-  { path: 'package', component: PackageComponent },
-  { path: 'operatordashboard', component: OperatorDashboardComponent },
-  { path: 'subject', component: SubjectComponent },
-  { path: 'topic', component: TopicComponent }
+  { path: 'admin/dashboard', component: DashboardComponent },
+  { path: 'admin/category', component: CategoryComponent },
+  { path: 'admin/subcategory', component: SubCategoryComponent },
+  { path: 'admin/package', component: PackageComponent },
+  { path: 'operator/dashboard', component: OperatorDashboardComponent },
+  { path: 'operator/subject', component: SubjectComponent },
+  { path: 'operator/topic', component: TopicComponent }
 ];
 
 @NgModule({

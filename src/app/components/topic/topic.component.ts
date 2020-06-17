@@ -143,7 +143,7 @@ export class TopicComponent implements OnInit {
         });
         this.uploadForm.get('name').updateValueAndValidity();
         this.uploadForm.patchValue({
-          parent_id: topicData.subject_id
+          subject_id: topicData.subject_id
         });
         this.uploadForm.get('subject_id').updateValueAndValidity();
         this.toastr.success('topic loaded successfully.')

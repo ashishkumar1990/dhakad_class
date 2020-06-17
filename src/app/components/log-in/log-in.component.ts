@@ -28,11 +28,11 @@ export class LogInComponent implements OnInit {
     let userName=(this.login.userName.trim()).toLocaleLowerCase();
     let password=(this.login.password.trim()).toLocaleLowerCase();
     if(userName==="admin"  && password ==='admin'){
-      this._router.navigate(['/dashboard']);
+      this._router.navigate(['admin/dashboard']);
       this.toastr.success("Login Successfully as "+this.login.userName);
     }
     if(userName==="operator"  && password ==='operator'){
-      this._router.navigate(['/operatordashboard']);
+      this._router.navigate(['/operator/dashboard']);
       this.toastr.success("Login Successfully as "+this.login.userName);
     }else{
       this.toastr.error("Invalid Credentials");

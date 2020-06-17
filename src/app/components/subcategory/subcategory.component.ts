@@ -168,5 +168,6 @@ export class SubCategoryComponent implements OnInit {
     this.uploadForm.value.name=[''];
     this.uploadForm.value.parent_id=[''];
     this.enableSubCategory=false;
+    this.id='';
   }
 }

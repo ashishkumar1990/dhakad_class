@@ -6,23 +6,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  image: string;
-}
-let ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', image: ""},
-  {position: 2, name: 'Helium', image: ""},
-  {position: 3, name: 'Lithium', image: ""},
-  {position: 4, name: 'Beryllium', image: ""},
-  {position: 5, name: 'Boron', image: "",},
-  {position: 6, name: 'Carbon', image: ""},
-  {position: 7, name: 'Nitrogen', image: ""},
-  {position: 8, name: 'Oxygen', image: ""},
-  {position: 9, name: 'Fluorine', image: ""},
-  {position: 10, name: 'Neon', image: ""},
-];
+
 const  _serverUrl = 'http://34.93.43.250:3000/';
 
 
@@ -36,10 +20,14 @@ export class PackageComponent implements OnInit {
 
   imageURL: string;
   uploadForm: FormGroup;
-  displayedColumns: string[] = ['position', 'image', 'name', 'actions'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = ['position', 'image', 'name', 'category','subCategory','duration','validity','mrp','offerAmount','actions'];
+  dataSource = new MatTableDataSource([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   categories=[];
+  subCategories=[];
+  enablePackage:boolean;
+  mode:string;
+  id:"";
 
 
   // Roles: any = ['Admin', 'Author', 'Reader'];
@@ -47,46 +35,145 @@ export class PackageComponent implements OnInit {
   constructor(public fb: FormBuilder,private _http: HttpClient,private toastr: ToastrService) {
     // Reactive Form
     this.uploadForm = this.fb.group({
-      avatar: [null],
-      name: ['']
+      image: [null],
+      name: [''],
+      category_id: [''],
+      subCategory_id: [''],
+      duration: [''],
+      mrp: [''],
+      offer_amount: [''],
+      tagline: [''],
+      description: [''],
     });
   }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.getCategories();
+    this.mode = 'create';
+    this.enablePackage=false;
+    this.loadPackages();
   }
 
-  removePackage(id) {
-    let newData = _.filter(ELEMENT_DATA, function (data) {
-      return data.position !== id;
-    });
-    console.log(newData);
+  loadPackages ()  {
+    let  getAllPackageUrl="admin/packages?";
+    return this._http.get<any>(_serverUrl+getAllPackageUrl).subscribe(
+      (res) =>{
+        let allCategories=this.categories;
+        let allSubCategories=this.subCategories;
+        let packages= _.map(res.data,function (packageData,index) {
+          let categoryData= _.find(allCategories ,function (category) {
+            return category._id===packageData.category_id;
+          });
+          packageData.category='';
+          if(categoryData){
+            packageData.category=categoryData.name;
+          }
+          let subCategoryData= _.find(allSubCategories ,function (subCategory) {
+            return subCategory._id===packageData.subCategory_id;
+          });
+          packageData.subCategory='';
+          if(subCategoryData){
+            packageData.subCategory=subCategoryData.name;
+          }
+          packageData.position=(index+1);
+          packageData.imagePath="http://34.93.43.250:3000/uploads/"+packageData.image;
+          return packageData;
+        });
+        this.dataSource =new MatTableDataSource(packages);
+        this.dataSource.paginator = this.paginator;
+        this.toastr.success('packages loaded successfully.')
 
-    this.dataSource = new MatTableDataSource<PeriodicElement>(newData);
-    this.dataSource.paginator = this.paginator;
+      } ,
+      (err) => console.log(err)
+    );
+
+  }
+  // Submit Form
+  submit() {
+    if (this.mode === 'create') {
+      this.createPackage();
+    } else {
+      this.updatePackage();
+    }
+
+  }
+  createPackage(){
+    let  addCategoryUrl="admin/packages";
+    let data=this.uploadForm.value;
+    const formData = new FormData();
+    formData.append('image', data.image);
+    formData.append('name',data.name);
+    formData.append('category_id', data.category_id);
+    formData.append('subCategory_id', data.subCategory_id);
+    formData.append('duration', data.duration);
+    formData.append('mrp', data.mrp.toString());
+    formData.append('offer_amount', data.offer_amount.toString());
+    formData.append('tagline', data.tagline);
+    formData.append('description', data.description);
+    formData.append('validity', "lifetime");
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/x-www-form-urlencoded');
+    return this._http.post<any>(_serverUrl+addCategoryUrl, formData,{headers:headers}).subscribe(
+      (res) =>{
+        if (res.message === 'Something went wrong') {
+          this.toastr.error('Something went wrong.')
+        } else {
+          this.toastr.success('Package added successfully');
+          this.enablePackage=false;
+          this.loadPackages();
+        }
+
+      } ,
+      (err) => console.log(err)
+    );
   }
 
-  addPackage(name) {
-    // console.log(newData);
-    ELEMENT_DATA.push({position: 11, name: 'NewPackage', image: ""});
-    this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    this.dataSource.paginator = this.paginator;
+  updatePackage(){
+    let  addCategoryUrl="admin/packages/"+this.id;
+    let data=this.uploadForm.value;
+    const formData = new FormData();
+    if( data.image){
+      formData.append('image', data.image);
+    }
+    formData.append('name',data.name);
+    formData.append('category_id', data.category_id);
+    formData.append('subCategory_id', data.subCategory_id);
+    formData.append('duration', data.duration);
+    formData.append('mrp', data.mrp);
+    formData.append('offer_amount', data.offer_amount);
+    formData.append('tagline', data.tagline);
+    formData.append('description', data.description);
+    formData.append('validity', "lifetime");
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/x-www-form-urlencoded');
+    return this._http.put<any>(_serverUrl+addCategoryUrl, formData,{headers:headers}).subscribe(
+      (res) =>{
+        if (res.message === 'Something went wrong') {
+          this.toastr.error('Something went wrong.')
+        } else {
+          this.toastr.success('Category added successfully');
+          this.enablePackage=false;
+          this.loadPackages();
+        }
+
+      } ,
+      (err) => console.log(err)
+    );
   }
+
 
   getCategories ()  {
     let  getAllCategoryUrl="admin/categories?";
     return this._http.get<any>(_serverUrl+getAllCategoryUrl).subscribe(
       (res) =>{
-        this.categories=res.data;
-        // let categories= _.map(res.data,function (category,index) {
-        //   category.position=(index+1);
-        //   category.imagePath="http://34.93.43.250:3000/uploads/"+category.image;
-        //   return category;
-        // });
-        // this.dataSource =new MatTableDataSource(categories);
-        // this.dataSource.paginator = this.paginator;
-        this.toastr.success('categories loaded successfully.')
+        let allCategories=res.data;
+        this.subCategories = _.filter(allCategories, function (category) {
+          return category.parent_id;
+        });
+        this.categories = _.filter(allCategories, function (category) {
+          return !category.parent_id;
+        });
 
       } ,
       (err) => console.log(err)
@@ -99,9 +186,9 @@ export class PackageComponent implements OnInit {
   showPreview(event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.uploadForm.patchValue({
-      avatar: file
+      image: file
     });
-    this.uploadForm.get('avatar').updateValueAndValidity();
+    this.uploadForm.get('image').updateValueAndValidity();
 
     // File Preview
     const reader = new FileReader();
@@ -111,8 +198,81 @@ export class PackageComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  // Submit Form
-  submit() {
-    console.log(this.uploadForm.value);
+  getPackageById (id)  {
+    let  getCategoryUrl="admin/packages/"+id;
+    return this._http.get<any>(_serverUrl+getCategoryUrl).subscribe(
+      (res) =>{
+        this.mode="update";
+        this.id=id;
+        this.enablePackage=true;
+        this.uploadForm.patchValue({
+          name: res.data.name
+        });
+        this.uploadForm.get('name').updateValueAndValidity();
+        this.uploadForm.patchValue({
+          category_id: res.data.category_id
+        });
+        this.uploadForm.get('category_id').updateValueAndValidity();
+        this.uploadForm.patchValue({
+          category_id: res.data.category_id
+        });
+        this.uploadForm.get('category_id').updateValueAndValidity();
+        this.uploadForm.patchValue({
+          subCategory_id: res.data.subCategory_id
+        });
+        this.uploadForm.get('subCategory_id').updateValueAndValidity();
+        this.uploadForm.patchValue({
+          duration: res.data.duration
+        });
+        this.uploadForm.get('duration').updateValueAndValidity();
+        this.uploadForm.patchValue({
+          mrp: res.data.mrp
+        });
+        this.uploadForm.get('mrp').updateValueAndValidity();
+        this.uploadForm.patchValue({
+          offer_amount: res.data.offer_amount
+        });
+        this.uploadForm.get('offer_amount').updateValueAndValidity();
+        this.uploadForm.patchValue({
+          tagline: res.data.tagline
+        });
+        this.uploadForm.get('tagline').updateValueAndValidity();
+        this.uploadForm.patchValue({
+          description: res.data.description
+        });
+        this.uploadForm.get('description').updateValueAndValidity();
+        this.imageURL="http://34.93.43.250:3000/uploads/"+res.data.image;
+        this.toastr.success('Package loaded successfully.')
+      } ,
+      (err) => console.log(err)
+    );
+
   }
+
+  removeCategory(id){
+    let  deleteAllCategoryUrl="admin/packages/"+id;
+    return this._http.delete<any>(_serverUrl+deleteAllCategoryUrl).subscribe(
+      (res) =>{
+        this.toastr.success('Package removed successfully.');
+        this.loadPackages();
+      } ,
+      (err) => console.log(err)
+    );
+
+  }
+
+  allowPackageForm(){
+    this.enablePackage=true;
+  }
+
+  reset() {
+    this.uploadForm.value.name=[''];
+    this.uploadForm.value.image=[null];
+    this.uploadForm.value.image_bg=[''];
+    this.uploadForm.value.text_bg=[''];
+    this.imageURL="";
+    this.enablePackage=false;
+    this.id="";
+  }
+
 }

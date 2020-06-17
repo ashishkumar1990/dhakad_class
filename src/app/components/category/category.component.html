@@ -6,7 +6,7 @@
           <div class="categorydiv"><span>Category</span></div>
         </mat-card-title>
       </mat-card-header>
-      <a  routerLink="/dashboard" style="color: #162850;float: right; margin-top: 10px; margin-right: 10px; cursor: pointer"> Back </a>
+      <a  routerLink="/admin/dashboard" style="color: #162850;float: right; margin-top: 10px; margin-right: 10px; cursor: pointer"> Back </a>
       <img src="../../../assets/plus.png" style="    float: right; margin-top: 10px; margin-right: 10px;height: 20px;width: 20px;cursor: pointer" (click)="allowCategoryForm()" *ngIf="!enableCategory" >
       <form [formGroup]="uploadForm" (ngSubmit)="submit()" style="text-align: center" *ngIf="enableCategory">
         <mat-card-content>

@@ -17,10 +17,10 @@ export class OperatorDashboardComponent implements OnInit {
   }
 
   onClickSubject(){
-    this._router.navigate(['/subject']);
+    this._router.navigate(['operator/subject']);
   }
 
   onClickTopic(){
-    this._router.navigate(['/topic']);
+    this._router.navigate(['operator/topic']);
   }
 }
