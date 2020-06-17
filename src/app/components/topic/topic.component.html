@@ -1,0 +1,70 @@
+
+
+<div class="login-wrapper"  fxLayoutAlign="center center">
+
+  <div class="card">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><div class="topicdiv" style="margin-top: 50px"><span>Topic</span></div></mat-card-title>
+      </mat-card-header>
+      <a  routerLink="/operatordashboard" style="color: #162850;float: right; margin-top: 10px; margin-right: 10px; cursor: pointer"> Back </a>
+      <img src="../../../assets/plus.png" style="float: right; margin-top: 10px; margin-right: 10px;height: 20px;width: 20px;cursor: pointer" (click)="allowTopicForm()" *ngIf="!enableTopic" >
+      <form class="example-form" style="text-align: center" [formGroup]="uploadForm" (ngSubmit)="submit()" *ngIf="enableTopic">
+        <mat-card-content>
+          <mat-form-field style="margin-left: 10px; width:30%">
+            <input matInput  class="form-control" name="topicName" placeholder="Enter topic name" formControlName="name">
+          </mat-form-field>
+          <mat-form-field  style="margin-left: 10px; width:30%">
+            <mat-label>Select Subject</mat-label>
+            <mat-select  formControlName="subject_id">
+              <mat-option  *ngFor="let subject of subjects" value="{{subject._id}}">{{subject.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card-content>
+        <button mat-flat-button color="primary" style="margin-left: 10px" *ngIf="mode==='update'">Update
+        </button>
+        <button mat-flat-button color="primary" style="margin-left: 10px" *ngIf="mode==='create'">Save
+        </button>
+      </form>
+    </mat-card>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin-top: 50px">
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> No. </th>
+        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name" >
+        <th mat-header-cell *matHeaderCellDef  style="background: #162850 ; color:white"> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="subject" >
+        <th mat-header-cell *matHeaderCellDef  style="background: #162850 ; color:white"> Subject </th>
+        <td mat-cell *matCellDef="let element">  {{element.subjectName}}  </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Actions</th>
+        <td mat-cell *matCellDef="let element"><img src="../../../assets/edit.png" style="margin-right: 40px;
+    margin-left: 10px;
+    margin-top: 15px; height: 18px ;width: 18px;cursor: pointer" (click)="getTopicById(element._id)">
+          <img src="../../../assets/remove.png" (click)="removeTopic"(element._id)" style="margin-right: 40px;
+    margin-left: 10px;
+    margin-top: 15px;height: 18px ;width: 18px;cursor: pointer"></td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[6]" showFirstLastButtons></mat-paginator>
+  </div>
+
+</div>

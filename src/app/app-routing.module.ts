@@ -5,6 +5,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CategoryComponent } from './components/category/category.component';
 import { SubCategoryComponent } from './components/subcategory/subcategory.component';
 import { PackageComponent } from './components/package/package.component';
+import {OperatorDashboardComponent} from './components/operatordashboard/operatordashboard.component';
+import {SubjectComponent} from './components/subject/subject.component';
+import {TopicComponent} from './components/topic/topic.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -12,7 +15,10 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'category', component: CategoryComponent },
   { path: 'subcategory', component: SubCategoryComponent },
-  { path: 'package', component: PackageComponent }
+  { path: 'package', component: PackageComponent },
+  { path: 'operatordashboard', component: OperatorDashboardComponent },
+  { path: 'subject', component: SubjectComponent },
+  { path: 'topic', component: TopicComponent }
 ];
 
 @NgModule({

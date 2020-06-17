@@ -1,0 +1,50 @@
+
+<div class="login-wrapper"  >
+  <div style="display: inline-flex">
+  <mat-toolbar  class="operatordashboard-header menu1">
+    <mat-toolbar-row>
+      <span class="vector">  <img src="../../../assets/Vector.png" alt="img_source" title="img_source"> Operator Panel</span>
+      <span class="operatordashboardlevel">DASHBOARD</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-toolbar  class="operatordashboard-header menu2">
+    <mat-toolbar-row style="display: inline">
+      <div style="float: right;margin-top: 10px">
+      <img src="../../../assets/notification.png" alt="img_source" title="img_source" style="margin-right: 20px; cursor: pointer;">
+      <img src="../../../assets/profile.png" alt="img_source" title="img_source" style="margin-right: 70px; cursor: pointer;">
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  </div>
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav mode="side" opened >
+      <div style="margin-top: 50px; padding: 20px;" ><img src="../../../assets/img_avatar.png"  alt="Avatar" style="margin-left: 30px;
+    width: 150px;
+    border-radius: 50%;">
+      </div>
+      <div style="text-align: center">Wel come Mr.dhakad</div>
+<div style="margin-left: 3px">
+      <div class="menuItem"><div style="display: inline-flex"><img src="../../../assets/Users.png" class="menuImage"><div class="menuLevel" (click)="onClickSubject()">Subject</div></div></div>
+      <div class="menuItem"><div style="display: inline-flex"><img src="../../../assets/Users.png" class="menuImage"><div  class="menuLevel" (click)="onClickTopic()">Topic</div></div></div>
+</div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+
+      <div style="display: flex;margin-top: 100px">
+        <div style="background:#5AC8E2;" class="blocks">
+             <div style="margin-top: 110px">Updates</div>
+        </div>
+        <div style="background:#6DE25A;" class="blocks">
+          <div style="margin-top: 110px"> Total Visitors</div>
+        </div>
+        <div style="background:#D5D91A;" class="blocks">
+          <div style="margin-top: 110px">News</div>
+        </div>
+        <div style="background:#F072B6;" class="blocks">
+          <div style="margin-top: 110px">Queries</div>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>

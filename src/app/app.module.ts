@@ -28,6 +28,9 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {CategoryComponent} from './components/category/category.component';
 import {SubCategoryComponent} from './components/subcategory/subcategory.component';
 import {PackageComponent} from './components/package/package.component';
+import {OperatorDashboardComponent} from './components/operatordashboard/operatordashboard.component';
+import {SubjectComponent} from './components/subject/subject.component';
+import {TopicComponent} from  './components/topic/topic.component';
 
 
 @NgModule({
@@ -37,7 +40,10 @@ import {PackageComponent} from './components/package/package.component';
     DashboardComponent,
     CategoryComponent,
     SubCategoryComponent,
-    PackageComponent
+    PackageComponent,
+    OperatorDashboardComponent,
+    SubjectComponent,
+    TopicComponent
   ],
   imports: [
     BrowserModule,

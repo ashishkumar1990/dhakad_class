@@ -32,7 +32,7 @@ export class LogInComponent implements OnInit {
       this.toastr.success("Login Successfully as "+this.login.userName);
     }
     if(userName==="operator"  && password ==='operator'){
-      this._router.navigate(['/dashboard']);
+      this._router.navigate(['/operatordashboard']);
       this.toastr.success("Login Successfully as "+this.login.userName);
     }else{
       this.toastr.error("Invalid Credentials");
