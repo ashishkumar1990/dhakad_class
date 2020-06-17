@@ -1,7 +1,7 @@
 import { Component, OnInit,ViewChild  } from '@angular/core';
 import { Router } from '@angular/router'
 import {Login} from './log-in';
-// import {ToastrService} from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 // import {MessageService} from 'primeng/api';
 import {NgForm}from '@angular/forms';
 
@@ -18,16 +18,25 @@ export class LogInComponent implements OnInit {
   // loading:string="";
   loginForm: NgForm;
   // @ViewChild('loginForm') currentForm: NgForm;
-  constructor(private _router:Router) { }
+  constructor(private _router:Router, private toastr: ToastrService) { }
 
   ngOnInit() {
   }
 
 
   userLogin() {
-    if(this.login.userName==="admin"  && this.login.password ==='admin'){
+    let userName=(this.login.userName.trim()).toLocaleLowerCase();
+    let password=(this.login.password.trim()).toLocaleLowerCase();
+    if(userName==="admin"  && password ==='admin'){
       this._router.navigate(['/dashboard']);
+      this.toastr.success("Login Successfully as "+this.login.userName);
     }
-    // console.log("hi");
+    if(userName==="operator"  && password ==='operator'){
+      this._router.navigate(['/dashboard']);
+      this.toastr.success("Login Successfully as "+this.login.userName);
+    }else{
+      this.toastr.error("Invalid Credentials");
+    }
   }
+
 }

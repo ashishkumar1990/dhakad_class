@@ -16,7 +16,7 @@
           <input type="file" accept="image/*" class="form-control" name="categoryImage" (change)="showPreview($event)"
                  style="margin-left: 200px;margin-top: 58px;"/>
           <mat-form-field style="margin-left: 10px; width:30%">
-            <input matInput class="form-control" name="categoryName" placeholder="Enter category name"
+            <input matInput class="form-control" placeholder="Enter category name"
                    formControlName="name">
           </mat-form-field>
 
@@ -24,20 +24,22 @@
                  (colorPickerChange)="onChangeColor('text',$event)" style="height: 20px;width: 20px"/>
 
           <mat-form-field style="margin-left: 10px;margin-right: 10px; width:5%">
-            <input matInput class="form-control" name="categoryName" placeholder="Text_bg" [disabled]="true"
+            <input matInput class="form-control"  placeholder="Text_bg"
                    formControlName="text_bg" >
           </mat-form-field>
           <input [(colorPicker)]="imageColor" [style.background]="imageColor"
                  (colorPickerChange)="onChangeColor('image',$event)"
                  style="height: 20px;width: 20px;margin-left: 10px;"/>
 
-          <mat-form-field style="margin-left: 10px;margin-right: 10px; width:5%">
-            <input matInput class="form-control" name="categoryName" placeholder="Image_bg" disabled="true"
+          <mat-form-field style="margin-left: 10px;margin-right: 10px; width:5%" >
+            <input matInput class="form-control" name="categoryName" placeholder="Image_bg"
                    formControlName="image_bg">
           </mat-form-field>
 
         </mat-card-content>
-        <button mat-flat-button color="primary" style="margin-left: 10px">Save
+        <button mat-flat-button color="primary" style="margin-left: 10px" *ngIf="mode==='update'">Update
+        </button>
+        <button mat-flat-button color="primary" style="margin-left: 10px" *ngIf="mode==='create'">Save
         </button>
         <button mat-flat-button color="primary" style="margin-left: 10px" (click)="reset()">Cancel</button>
       </form>

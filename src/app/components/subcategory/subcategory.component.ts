@@ -6,24 +6,6 @@ import * as _ from 'underscore';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  image: string;
-  enableSubCategory:boolean;
-}
-let ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen',image:""},
-  {position: 2, name: 'Helium', image: ""},
-  {position: 3, name: 'Lithium', image: ""},
-  {position: 4, name: 'Beryllium', image: ""},
-  {position: 5, name: 'Boron', image: "", },
-  {position: 6, name: 'Carbon', image: ""},
-  {position: 7, name: 'Nitrogen', image: ""},
-  {position: 8, name: 'Oxygen', image: ""},
-  {position: 9, name: 'Fluorine', image: ""},
-  {position: 10, name: 'Neon', image: ""},
-];
 
 const  _serverUrl = 'http://34.93.43.250:3000/';
 
@@ -35,11 +17,14 @@ const  _serverUrl = 'http://34.93.43.250:3000/';
 
 export class SubCategoryComponent implements OnInit {
 
-  displayedColumns: string[] = ['position','image', 'name', 'actions'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = ['position','name', 'category', 'actions'];
+  dataSource = new MatTableDataSource([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   categories=[];
   uploadForm: FormGroup;
+  enableSubCategory:boolean;
+  mode:string;
+  id:string;
 
   // Roles: any = ['Admin', 'Author', 'Reader'];
   constructor(public fb: FormBuilder,private _http: HttpClient,private toastr: ToastrService) {
@@ -55,13 +40,25 @@ export class SubCategoryComponent implements OnInit {
     this.enableSubCategory=false;
     this.getCategories();
     this.loadSubCategories();
+    this.mode='create';
   }
 
   loadSubCategories ()  {
-    let  getAllSubCategoryUrl="admin/categories?parent=false";
+    let  getAllSubCategoryUrl="admin/categories";
     return this._http.get<any>(_serverUrl+getAllSubCategoryUrl).subscribe(
       (res) =>{
-        let subCategories= _.map(res.data,function (subCategory,index) {
+        let subCategories = _.filter(res.data, function (category) {
+          return category.parent_id;
+        });
+        let allCategories=this.categories;
+        subCategories= _.map(subCategories,function (subCategory,index) {
+         let categoryData= _.find(allCategories ,function (category) {
+            return category._id===subCategory.parent_id;
+          });
+          subCategory.categoryName='';
+         if(categoryData){
+           subCategory.categoryName=categoryData.name;
+         }
           subCategory.position=(index+1);
           return subCategory;
         });
@@ -79,16 +76,9 @@ export class SubCategoryComponent implements OnInit {
     let  getAllCategoryUrl="admin/categories?";
     return this._http.get<any>(_serverUrl+getAllCategoryUrl).subscribe(
       (res) =>{
-        this.categories=res.data;
-        // let categories= _.map(res.data,function (category,index) {
-        //   category.position=(index+1);
-        //   category.imagePath="http://34.93.43.250:3000/uploads/"+category.image;
-        //   return category;
-        // });
-        // this.dataSource =new MatTableDataSource(categories);
-        // this.dataSource.paginator = this.paginator;
-        this.toastr.success('categories loaded successfully.')
-
+        this.categories = _.filter(res.data, function (category) {
+          return !category.parent_id;
+        });
       } ,
       (err) => console.log(err)
     );
@@ -97,42 +87,65 @@ export class SubCategoryComponent implements OnInit {
 
   allowCategoryForm(){
     this.enableSubCategory=true;
-    this.uploadForm.get('name').disable();
-    this.uploadForm.get('parent_id').disable();
   }
 
 
   submit() {
     console.log(this.uploadForm.value);
-    let  addSubCategoryUrl="admin/categories";
+    let  addSubCategoryUrl=this.mode==='update'?"admin/categories/"+this.id:"admin/categories";
     const formData = new FormData();
     formData.append('name', this.uploadForm.value.name);
     formData.append('parent_id', this.uploadForm.value.parent_id);
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded');
-    return this._http.post<any>(_serverUrl+addSubCategoryUrl, formData,{headers:headers}).subscribe(
-      (res) =>{
-        if (res.message === 'Something went wrong') {
-          this.toastr.error('Something went wrong.')
-        } else {
-          this.toastr.success('Sub-Category added successfully');
-          this.enableSubCategory=false;
-        }
+    if(this.mode==='update'){
+      return this._http.put<any>(_serverUrl+addSubCategoryUrl, formData,{headers:headers}).subscribe(
+        (res) =>{
+          if (res.message === 'Something went wrong') {
+            this.toastr.error('Something went wrong.')
+          } else {
+            this.toastr.success('Sub-Category updated successfully');
+            this.loadSubCategories();
+            this.enableSubCategory=false;
+          }
 
-      } ,
-      (err) => console.log(err)
-    );
+        } ,
+        (err) => console.log(err)
+      );
+    }else{
+      return this._http.post<any>(_serverUrl+addSubCategoryUrl, formData,{headers:headers}).subscribe(
+        (res) =>{
+          if (res.message === 'Something went wrong') {
+            this.toastr.error('Something went wrong.')
+          } else {
+            this.toastr.success('Sub-Category added successfully');
+            this.loadSubCategories();
+            this.enableSubCategory=false;
+          }
+
+        } ,
+        (err) => console.log(err)
+      );
+    }
+
   }
 
   getSubCategoryById (id)  {
     let  getSubCategoryUrl="admin/categories/"+id;
     return this._http.get<any>(_serverUrl+getSubCategoryUrl).subscribe(
       (res) =>{
+        this.mode='update';
+        this.id=id;
+       let  subCategoryData= res.data;
         this.enableSubCategory=true;
         this.uploadForm.patchValue({
-          name: res.data.name
+          name: subCategoryData.name
         });
         this.uploadForm.get('name').updateValueAndValidity();
+        this.uploadForm.patchValue({
+          parent_id: subCategoryData.parent_id
+        });
+        this.uploadForm.get('parent_id').updateValueAndValidity();
         this.toastr.success('sub category loaded successfully.')
       } ,
       (err) => console.log(err)

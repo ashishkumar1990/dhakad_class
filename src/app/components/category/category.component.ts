@@ -24,6 +24,8 @@ export class CategoryComponent implements OnInit {
   imageColor:string;
   textColor:string;
   enableCategory:boolean;
+  mode:string;
+  id:"";
 
   uploadForm: FormGroup;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -43,6 +45,7 @@ export class CategoryComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.enableCategory=false;
     this.loadCategories();
+    this.mode='create';
 
   }
 
@@ -50,7 +53,11 @@ export class CategoryComponent implements OnInit {
       let  getAllCategoryUrl="admin/categories?";
       return this._http.get<any>(_serverUrl+getAllCategoryUrl).subscribe(
         (res) =>{
-         let categories= _.map(res.data,function (category,index) {
+          let categories = _.filter(res.data, function (category) {
+            return !category.parent_id;
+          });
+
+          categories= _.map(categories,function (category,index) {
             category.position=(index+1);
             category.imagePath="http://34.93.43.250:3000/uploads/"+category.image;
             return category;
@@ -83,27 +90,36 @@ export class CategoryComponent implements OnInit {
 
   allowCategoryForm(){
     this.enableCategory=true;
-    this.uploadForm.get('image_bg').disable();
-    this.uploadForm.get('text_bg').disable();
-    this.uploadForm.patchValue({
-      text_bg: "#ffffff"
-    });
-    this.uploadForm.get('text_bg').updateValueAndValidity();
-    this.uploadForm.patchValue({
-      image_bg: "#ffffff"
-    });
-    this.uploadForm.get('image_bg').updateValueAndValidity();
+    if(this.mode==="create"){
+      this.uploadForm.patchValue({
+        text_bg: "#ffffff"
+      });
+      this.uploadForm.get('text_bg').updateValueAndValidity();
+      this.uploadForm.patchValue({
+        image_bg: "#ffffff"
+      });
+      this.uploadForm.get('image_bg').updateValueAndValidity();
+    }
+
   }
 
   // Submit Form
   submit() {
-    console.log(this.uploadForm.value);
+    if (this.mode === 'create') {
+      this.createCategory();
+    } else {
+      this.updateCategory();
+    }
+
+  }
+  createCategory(){
     let  addCategoryUrl="admin/categories";
+    let data=this.uploadForm.value;
     const formData = new FormData();
-    formData.append('image', this.uploadForm.value.image);
-    formData.append('name', this.uploadForm.value.name);
-    formData.append('text_bg', this.uploadForm.value.text_bg);
-    formData.append('image_bg', this.uploadForm.value.text_bg);
+    formData.append('image', data.image);
+    formData.append('name',data.name);
+    formData.append('text_bg', data.text_bg);
+    formData.append('image_bg', data.text_bg);
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this._http.post<any>(_serverUrl+addCategoryUrl, formData,{headers:headers}).subscribe(
@@ -120,6 +136,34 @@ export class CategoryComponent implements OnInit {
       (err) => console.log(err)
     );
   }
+
+  updateCategory(){
+    let  addCategoryUrl="admin/categories/"+this.id;
+    let data=this.uploadForm.value;
+    const formData = new FormData();
+    if( data.image){
+      formData.append('image', data.image);
+    }
+    formData.append('name',data.name);
+    formData.append('text_bg', data.text_bg);
+    formData.append('image_bg', data.text_bg);
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/x-www-form-urlencoded');
+    return this._http.put<any>(_serverUrl+addCategoryUrl, formData,{headers:headers}).subscribe(
+      (res) =>{
+        if (res.message === 'Something went wrong') {
+          this.toastr.error('Something went wrong.')
+        } else {
+          this.toastr.success('Category added successfully');
+          this.enableCategory=false;
+          this.loadCategories();
+        }
+
+      } ,
+      (err) => console.log(err)
+    );
+  }
+
   onChangeColor(type,$event) {
     if(type==="image"){
       this.uploadForm.patchValue({
@@ -138,6 +182,8 @@ export class CategoryComponent implements OnInit {
     let  getCategoryUrl="admin/categories/"+id;
     return this._http.get<any>(_serverUrl+getCategoryUrl).subscribe(
       (res) =>{
+        this.mode="update";
+        this.id=id;
         this.enableCategory=true;
         this.uploadForm.patchValue({
           name: res.data.name
