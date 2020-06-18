@@ -105,6 +105,7 @@ export class TopicComponent implements OnInit {
             this.toastr.error('Something went wrong.')
           } else {
             this.toastr.success('Topic updated successfully');
+            this.reset();
             this.loadTopics();
             this.enableTopic=false;
           }
@@ -120,6 +121,7 @@ export class TopicComponent implements OnInit {
           } else {
             this.toastr.success('Topic added successfully');
             this.loadTopics();
+            this.reset();
             this.enableTopic=false;
           }
 
@@ -165,8 +167,9 @@ export class TopicComponent implements OnInit {
 
   }
   reset() {
-    this.uploadForm.value.name=[''];
-    this.uploadForm.value.subject_id=[''];
+    this.uploadForm.reset();
     this.enableTopic=false;
+    this.mode='create';
+    this.id="";
   }
 }

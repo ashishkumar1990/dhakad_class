@@ -106,6 +106,7 @@ export class SubCategoryComponent implements OnInit {
           } else {
             this.toastr.success('Sub-Category updated successfully');
             this.loadSubCategories();
+            this.reset();
             this.enableSubCategory=false;
           }
 
@@ -120,6 +121,7 @@ export class SubCategoryComponent implements OnInit {
           } else {
             this.toastr.success('Sub-Category added successfully');
             this.loadSubCategories();
+            this.reset();
             this.enableSubCategory=false;
           }
 
@@ -164,10 +166,11 @@ export class SubCategoryComponent implements OnInit {
     );
 
   }
+
   reset() {
-    this.uploadForm.value.name=[''];
-    this.uploadForm.value.parent_id=[''];
+    this.uploadForm.reset();
     this.enableSubCategory=false;
     this.id='';
+    this.mode='create';
   }
 }

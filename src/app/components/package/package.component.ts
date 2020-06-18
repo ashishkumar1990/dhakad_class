@@ -120,7 +120,7 @@ export class PackageComponent implements OnInit {
           this.toastr.error('Something went wrong.')
         } else {
           this.toastr.success('Package added successfully');
-          this.enablePackage=false;
+          this.reset();
           this.loadPackages();
         }
 
@@ -153,7 +153,7 @@ export class PackageComponent implements OnInit {
           this.toastr.error('Something went wrong.')
         } else {
           this.toastr.success('Category added successfully');
-          this.enablePackage=false;
+          this.reset();
           this.loadPackages();
         }
 
@@ -265,14 +265,14 @@ export class PackageComponent implements OnInit {
     this.enablePackage=true;
   }
 
+
   reset() {
-    this.uploadForm.value.name=[''];
-    this.uploadForm.value.image=[null];
-    this.uploadForm.value.image_bg=[''];
-    this.uploadForm.value.text_bg=[''];
+    this.uploadForm.reset();
     this.imageURL="";
     this.enablePackage=false;
     this.id="";
+    this.id='';
+    this.mode='create';
   }
 
 }

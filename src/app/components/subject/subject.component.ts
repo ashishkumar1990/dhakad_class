@@ -112,7 +112,7 @@ export class SubjectComponent implements OnInit {
           this.toastr.error('Something went wrong.')
         } else {
           this.toastr.success('Subject added successfully');
-          this.enableSubject=false;
+          this.reset();
           this.loadSubjects();
         }
 
@@ -137,7 +137,7 @@ export class SubjectComponent implements OnInit {
           this.toastr.error('Something went wrong.')
         } else {
           this.toastr.success('Subject added successfully');
-          this.enableSubject=false;
+          this.reset();
           this.loadSubjects();
         }
 
@@ -179,12 +179,10 @@ export class SubjectComponent implements OnInit {
   }
 
   reset() {
-    this.uploadForm.value.name=[''];
-    this.uploadForm.value.image=[null];
-    this.uploadForm.value.image_bg=[''];
-    this.uploadForm.value.text_bg=[''];
+    this.uploadForm.reset();
     this.imageURL="";
     this.enableSubject=false;
+    this.mode='create';
   }
 
 }

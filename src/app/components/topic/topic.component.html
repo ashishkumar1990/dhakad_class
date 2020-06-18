@@ -25,6 +25,8 @@
         </button>
         <button mat-flat-button color="primary" style="margin-left: 10px" *ngIf="mode==='create'">Save
         </button>
+        <button mat-flat-button color="primary" style="margin-left: 10px"  (click)="reset()">Cancel
+        </button>
       </form>
     </mat-card>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin-top: 50px">

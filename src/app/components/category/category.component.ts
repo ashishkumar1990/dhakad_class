@@ -128,7 +128,7 @@ export class CategoryComponent implements OnInit {
           this.toastr.error('Something went wrong.')
         } else {
           this.toastr.success('Category added successfully');
-          this.enableCategory=false;
+          this.reset();
           this.loadCategories();
         }
 
@@ -155,7 +155,7 @@ export class CategoryComponent implements OnInit {
           this.toastr.error('Something went wrong.')
         } else {
           this.toastr.success('Category added successfully');
-          this.enableCategory=false;
+          this.reset();
           this.loadCategories();
         }
 
@@ -222,13 +222,22 @@ export class CategoryComponent implements OnInit {
   }
 
   reset() {
-    this.uploadForm.value.name=[''];
-    this.uploadForm.value.image=[null];
-    this.uploadForm.value.image_bg=[''];
-    this.uploadForm.value.text_bg=[''];
-    this.imageURL="";
-    this.enableCategory=false;
-    this.id="";
+    this.uploadForm.reset();
+    this.imageURL = '';
+    this.enableCategory = false;
+    this.id = '';
+    this.mode = 'create';
+    this.uploadForm.patchValue({
+      text_bg: '#ffffff'
+    });
+    this.uploadForm.get('text_bg').updateValueAndValidity();
+    this.uploadForm.patchValue({
+      image_bg: '#ffffff'
+    });
+    this.uploadForm.get('image_bg').updateValueAndValidity();
+    this.imageColor='#ffffff';
+    this.textColor='#ffffff';
+
   }
 
 }
