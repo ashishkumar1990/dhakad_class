@@ -119,7 +119,7 @@ export class CategoryComponent implements OnInit {
     formData.append('image', data.image);
     formData.append('name',data.name);
     formData.append('text_bg', data.text_bg);
-    formData.append('image_bg', data.text_bg);
+    formData.append('image_bg', data.image_bg);
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this._http.post<any>(_serverUrl+addCategoryUrl, formData,{headers:headers}).subscribe(
@@ -146,7 +146,7 @@ export class CategoryComponent implements OnInit {
     }
     formData.append('name',data.name);
     formData.append('text_bg', data.text_bg);
-    formData.append('image_bg', data.text_bg);
+    formData.append('image_bg', data.image_bg);
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this._http.put<any>(_serverUrl+addCategoryUrl, formData,{headers:headers}).subscribe(
