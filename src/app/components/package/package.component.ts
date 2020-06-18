@@ -28,6 +28,7 @@ export class PackageComponent implements OnInit {
   enablePackage:boolean;
   mode:string;
   id:"";
+  lifeTimeValidity:boolean;
 
 
   // Roles: any = ['Admin', 'Author', 'Reader'];
@@ -44,6 +45,7 @@ export class PackageComponent implements OnInit {
       offer_amount: [''],
       tagline: [''],
       description: [''],
+      validity:['']
     });
   }
 
@@ -106,12 +108,18 @@ export class PackageComponent implements OnInit {
     formData.append('name',data.name);
     formData.append('category_id', data.category_id);
     formData.append('subCategory_id', data.subCategory_id);
-    formData.append('duration', data.duration);
     formData.append('mrp', data.mrp.toString());
     formData.append('offer_amount', data.offer_amount.toString());
     formData.append('tagline', data.tagline);
     formData.append('description', data.description);
-    formData.append('validity', "lifetime");
+    if(data.validity){
+      formData.append('validity', data.validity);
+      formData.append('duration', "");
+    }else{
+      formData.append('validity', "");
+      formData.append('duration', data.duration);
+    }
+
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this._http.post<any>(_serverUrl+addCategoryUrl, formData,{headers:headers}).subscribe(
@@ -139,12 +147,20 @@ export class PackageComponent implements OnInit {
     formData.append('name',data.name);
     formData.append('category_id', data.category_id);
     formData.append('subCategory_id', data.subCategory_id);
-    formData.append('duration', data.duration);
+
     formData.append('mrp', data.mrp);
     formData.append('offer_amount', data.offer_amount);
     formData.append('tagline', data.tagline);
     formData.append('description', data.description);
-    formData.append('validity', "lifetime");
+    if(data.validity){
+      formData.append('validity', data.validity);
+      formData.append('duration', "");
+    }else{
+      formData.append('validity', "");
+      formData.append('duration', data.duration);
+    }
+
+
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this._http.put<any>(_serverUrl+addCategoryUrl, formData,{headers:headers}).subscribe(
@@ -221,10 +237,20 @@ export class PackageComponent implements OnInit {
           subCategory_id: res.data.subCategory_id
         });
         this.uploadForm.get('subCategory_id').updateValueAndValidity();
-        this.uploadForm.patchValue({
-          duration: res.data.duration
-        });
-        this.uploadForm.get('duration').updateValueAndValidity();
+        if(res.data.validity){
+          this.lifeTimeValidity=true;
+          this.uploadForm.patchValue({
+            validity: res.data.validity
+          });
+          this.uploadForm.get('validity').updateValueAndValidity();
+          this.uploadForm.controls['duration'].disable();
+        }else{
+          this.uploadForm.patchValue({
+            duration: res.data.duration
+          });
+          this.uploadForm.get('duration').updateValueAndValidity();
+        }
+
         this.uploadForm.patchValue({
           mrp: res.data.mrp
         });
@@ -264,6 +290,28 @@ export class PackageComponent implements OnInit {
   allowPackageForm(){
     this.enablePackage=true;
   }
+  onValidityChange(event){
+    console.log(event);
+    if(event.checked){
+      this.uploadForm.patchValue({
+        validity: "lifetime"
+      });
+      this.uploadForm.get('validity').updateValueAndValidity();
+      this.uploadForm.patchValue({
+        duration: ""
+      });
+      this.uploadForm.get('duration').updateValueAndValidity();
+      this.uploadForm.controls['duration'].disable();
+    }else{
+      this.uploadForm.patchValue({
+        validity: ""
+      });
+      this.uploadForm.get('validity').updateValueAndValidity();
+      this.uploadForm.controls['duration'].enable();
+      this.lifeTimeValidity=false;
+    }
+  }
+
 
 
   reset() {

@@ -35,13 +35,14 @@
           </mat-form-field>
           </div>
           <div style="margin-top: 10px">
-          <mat-checkbox style="margin-left: 200px;" [checked]= "true" [disabled]= "true">Life Time Validity</mat-checkbox>
+          <mat-checkbox style="margin-left: 200px;" (change)="onValidityChange($event)" [checked]="lifeTimeValidity">Life Time Validity</mat-checkbox>
+            <mat-form-field style="margin-left: 10px; width:12%">
+              <input matInput  class="form-control" type="number" name="duration" placeholder="Duration" formControlName="duration">
+            </mat-form-field>
           <mat-form-field style="margin-left: 10px; width:27%">
             <input matInput  class="form-control" type="text" name="tagLine" placeholder="TagLine" formControlName="tagline">
           </mat-form-field>
-          <mat-form-field style="margin-left: 10px; width:12%">
-            <input matInput  class="form-control" type="number" name="duration" placeholder="Duration" formControlName="duration">
-          </mat-form-field>
+
           <mat-form-field style="margin-left: 10px; width:12%">
             <input matInput  class="form-control" type="number" name="mrp amount" placeholder="Mpr Amount" formControlName="mrp">
           </mat-form-field>
@@ -51,8 +52,11 @@
           </div>
         </mat-card-content>
         <div style="margin-top: 10px">
-        <button mat-flat-button color="primary" style="margin-left: 10px"   >Save</button>
-        <button mat-flat-button color="primary"  style="margin-left: 10px">Cancel</button>
+          <button mat-flat-button color="primary" style="margin-left: 10px" *ngIf="mode==='update'">Update
+          </button>
+          <button mat-flat-button color="primary" style="margin-left: 10px" *ngIf="mode==='create'">Save
+          </button>
+          <button mat-flat-button color="primary" style="margin-left: 10px"  (click)="reset()">Cancel</button>
         </div>
       </form>
     </mat-card>
@@ -96,7 +100,7 @@
       </ng-container>
       <ng-container matColumnDef="validity">
         <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> Validity</th>
-        <td mat-cell *matCellDef="let element"> Life Time</td>
+        <td mat-cell *matCellDef="let element"> {{element.validity}}</td>
       </ng-container>
       <ng-container matColumnDef="mrp">
         <th mat-header-cell *matHeaderCellDef style="background: #162850 ; color:white"> MRP.</th>
