@@ -31,7 +31,7 @@ export class LogInComponent implements OnInit {
       this._router.navigate(['admin/dashboard']);
       this.toastr.success("Login Successfully as "+this.login.userName);
     }
-    if(userName==="operator"  && password ==='operator'){
+    else if(userName==="operator"  && password ==='operator'){
       this._router.navigate(['/operator/dashboard']);
       this.toastr.success("Login Successfully as "+this.login.userName);
     }else{

@@ -94,12 +94,12 @@ export class TopicComponent implements OnInit {
     console.log(this.uploadForm.value);
     let  addTopicUrl=this.mode==='update'?"organiser/topics/"+this.id:"organiser/topics";
     const formData = new FormData();
-    formData.append('name', this.uploadForm.value.name);
-    formData.append('subject_id', this.uploadForm.value.subject_id);
+    let data={'name':this.uploadForm.value.name,"subject_id":this.uploadForm.value.subject_id};
+
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/x-www-form-urlencoded');
     if(this.mode==='update'){
-      return this._http.put<any>(_serverUrl+addTopicUrl, formData,{headers:headers}).subscribe(
+      return this._http.put<any>(_serverUrl+addTopicUrl, data,{headers:headers}).subscribe(
         (res) =>{
           if (res.message === 'Something went wrong') {
             this.toastr.error('Something went wrong.')
@@ -113,7 +113,7 @@ export class TopicComponent implements OnInit {
         (err) => console.log(err)
       );
     }else{
-      return this._http.post<any>(_serverUrl+addTopicUrl, formData,{headers:headers}).subscribe(
+      return this._http.post<any>(_serverUrl+addTopicUrl, data,{headers:headers}).subscribe(
         (res) =>{
           if (res.message === 'Something went wrong') {
             this.toastr.error('Something went wrong.')
