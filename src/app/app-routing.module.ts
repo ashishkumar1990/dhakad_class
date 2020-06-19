@@ -8,6 +8,7 @@ import { PackageComponent } from './components/package/package.component';
 import {OperatorDashboardComponent} from './components/operatordashboard/operatordashboard.component';
 import {SubjectComponent} from './components/subject/subject.component';
 import {TopicComponent} from './components/topic/topic.component';
+import {OperatorPackageComponent} from './components/operatorPackage/operatorPackage.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'admin/package', component: PackageComponent },
   { path: 'operator/dashboard', component: OperatorDashboardComponent },
   { path: 'operator/subject', component: SubjectComponent },
-  { path: 'operator/topic', component: TopicComponent }
+  { path: 'operator/topic', component: TopicComponent },
+  { path: 'operator/package', component: OperatorPackageComponent }
 ];
 
 @NgModule({

@@ -31,6 +31,7 @@ import {PackageComponent} from './components/package/package.component';
 import {OperatorDashboardComponent} from './components/operatordashboard/operatordashboard.component';
 import {SubjectComponent} from './components/subject/subject.component';
 import {TopicComponent} from  './components/topic/topic.component';
+import {OperatorPackageComponent} from  './components/operatorPackage/operatorPackage.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {TopicComponent} from  './components/topic/topic.component';
     PackageComponent,
     OperatorDashboardComponent,
     SubjectComponent,
-    TopicComponent
+    TopicComponent,
+    OperatorPackageComponent
   ],
   imports: [
     BrowserModule,

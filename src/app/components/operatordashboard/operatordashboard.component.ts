@@ -23,4 +23,7 @@ export class OperatorDashboardComponent implements OnInit {
   onClickTopic(){
     this._router.navigate(['operator/topic']);
   }
+  onClickPackage(){
+    this._router.navigate(['operator/package']);
+  }
 }
